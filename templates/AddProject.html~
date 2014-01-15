@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Project to Autodeployer</title>
+    <link href="Forms.css" type="text/css" rel="stylesheet">
+
+
+</head>
+<body>
+
+
+<h1>New Project</h1>
+<form name="add" method="post" onsubmit="return validateDestination() && validateGit()" action="addproject">
+    <input type="hidden" name="id" value="${model.pid}">
+    <table border = "0">
+
+        <tr>
+            <td>Project Name:</td>
+            <td><input class="fill"  type="text" name="name" required ></td>
+        </tr>
+
+        <tr>
+            <td>Grails Version:</td>
+            <td><input class="fill" type="text" name="grailsVersion" ></td>
+        </tr>
+        <tr>
+            <td>Git Repository (ssh URL): (git@github.com:username/ProjectRepo.git)</td>
+            <td><input class="fill" type="text" name="gitRepo" required ></td>
+        </tr>
+        <tr>
+            <td>Deployment Destination: (username@destination_address:path_to_deploy_to/)</td>
+            <td><input class="fill" type="text" name="destination" required></td>
+        </tr>
+        <tr>
+            
+            <td><input type="submit"  value="Add" id = "button"></td>
+        </tr>
+
+
+
+    </table>
+
+
+
+</form>
+
+
+<script>
+        
+
+        function validateDestination(){
+
+           var p = document.forms["add"]["destination"].value;
+           var atpos = p.indexOf("@");
+            var colpos = p.indexOf(":");
+		   if (atpos <= 0 || colpos <= 0 || colpos <= atpos+2 || p == "" || p == null)
+  			{
+  		        alert("Not a valid destination address");
+                	return false;
+  			} else {
+  			    return true;
+  			}
+        }
+
+        function validateGit(){
+            var p = document.forms["add"]["gitRepo"].value;
+           var atpos = p.indexOf("@");
+            var colpos = p.indexOf(":");
+		   if (atpos <= 0 || colpos <= 0 || colpos <= atpos+2 || p == "" || p == null)
+  			{
+  		        alert("Not a valid Git SSH URL");
+                return false;
+  			} else {
+  			    return true;
+  			}
+        }
+
+
+
+
+</script>
+
+
+
+
+</script>
+
+</body>
+</html>

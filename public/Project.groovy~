@@ -1,0 +1,62 @@
+/**
+ * Created by imaculate on 12/18/13.
+ */
+ 
+package com.niafikra;
+import groovy.sql.Sql
+
+import java.sql.*;
+
+public class Project{
+    long id;
+
+    String name, grailsVersion,gitRepoSsh, destination, ownerEmail;
+
+
+
+
+
+
+
+    static void addProject( email, name , grailsVersion, gitRepo, destination){
+        def db = Sql.newInstance('jdbc:mysql://localhost:3306/Autodeployer', 'root', 'freedom', 'com.mysql.jdbc.Driver');
+        db.execute("""Insert into Projects ((Email, Name, GrailsVersion, gitRepo, Destination) values ($email, $name, $grailsVersion, $gitRepo, $destination""")
+        db.close();
+
+    }
+
+    static void deleteProject( id){
+        def db = Sql.newInstance('jdbc:mysql://localhost:3306/Autodeployer', 'root', 'freedom', 'com.mysql.jdbc.Driver');
+        db.execute("""Delete from Projects where PID = $id""")
+
+
+    }
+    static void updateProject( id, name , grailsVersion, gitRepo, destination){
+        def db = Sql.newInstance('jdbc:mysql://localhost:3306/Autodeployer', 'root', 'freedom', 'com.mysql.jdbc.Driver');
+        db.execute("""update Projects set  Name = $name, GrailsVersion = $grailsVersion, gitRepo = $gitRepo, Destination = $destination where PID = $id""" )
+        db.close();
+    }
+
+    static Collection<Object> getProjects(email){
+        def db = Sql.newInstance('jdbc:mysql://localhost:3306/Autodeployer', 'root', 'freedom', 'com.mysql.jdbc.Driver');
+        def projectList = [];
+        //fetch metadata first
+
+        def processMeta = {metaData -> metaData.columnCount.times(projectList << metaData.getColumnLabel(it + 1))}
+        //then fetch each row
+        db.eachRow("""Select * from Projects where Email = $email""", processMeta){
+            projectList << new Project(id: it[0], ownerEmail: it[1], name: it[2],grailsVersion: it[3],gitRepoSsh: it[4], destination: it[5] )
+        }
+        db.close();
+        projectList
+    }
+
+
+
+
+
+
+    static void deploy(git, destination){
+        //some code to deploy project to respective environment probably chinese.
+    }
+}

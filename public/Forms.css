@@ -1,0 +1,120 @@
+#button
+{
+background-color: #32CD32;
+color:white;
+}
+
+.fill{
+border-width: 2px;
+border-color: #32CD32;
+}
+
+
+footer{
+position: absolute;
+bottom:0px;
+}
+
+h1
+{
+text-align: center;
+text-indent: 20px;
+color: #B0C4DE;
+}
+fieldset
+{
+width: 500px;
+
+border-width: 3px;
+border: 5px groove #32CD32 ;
+padding: 10px;
+text-align: center;
+}
+#form
+{
+background-image:url('deploy-logo.jpg');
+background-repeat:no-repeat;
+background-position:left top;
+margin-left:50px;
+margin-top: 50px;
+}
+.buttons
+{
+background-color: #32CD32;
+color:white;
+}
+#datatable{
+border-collapse: collapse;
+border:1px #B0C4DE;
+width:100%;
+height: 100%
+
+}
+
+.firstrow{
+background-color:#B0C4DE;
+border:1px #B0C4DE;
+color:white;
+text-align: left;
+
+}
+.datarow{
+padding: 5px;
+border:1px #B0C4DE;
+text-align:left;
+
+}
+#message{
+color: green;
+}
+#errormessage{
+color: red;
+}
+
+#menu ul{
+display: none;
+list-style:none;
+position: absolute;
+z-index:999;
+}
+
+#menu li:hover > ul{
+display:block;
+}
+
+
+
+#menu li a{
+text-decoration:none;
+display: block;
+color: green;
+height: 2em;
+line-height: 2em;
+padding: 2px;
+
+}
+
+#menu li{
+float: left
+}
+
+#menu{
+list-style:none;
+position:absolute;
+top: 0px;
+right: 50px;
+}
+
+body{
+
+}
+
+
+
+
+
+
+
+
+
+

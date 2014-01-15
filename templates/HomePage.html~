@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Your Projects
+    </title>
+    <link href="Forms.css" type="text/css" rel="stylesheet">
+
+</head>
+<body>
+    <h1> Autodeployer </h1>
+    <% if(model.message != ""){ %>
+
+        <p id = "message">$model.message</p>
+    <% }else if (model.errormessage != ""){ %>
+        <p id = "errormessage">$model.errormessage</p>
+    <% } %>
+
+    <h3> Public ssh key:</h3>
+
+    <form>
+        <input type="button" onClick="parent.location='AddProject.html'" value = "New Project">
+    </form>
+
+    <ul id = "menu">
+
+        <li>
+            <a href = "#">${model.username} </a>
+            <ul >
+                <li> <a href = "ChangePassword.html">ChangePassword</a></li>
+                <li><form method = "post" action = "logout"><input type = "submit" value="Logout" class = "buttons"> </form></li>
+            </ul>
+        </li>
+    </ul>
+
+    <table id = "datatable">
+	
+        <tr class="firstrow">
+        
+
+            <th > Project Name </th>
+			<th > Grails version </th>
+			<th > Git Repository(ssh) </th>
+			<th > Deployment Destination </th>
+
+       
+            <th colspan="3"> Actions</th>
+         </tr>
+	<% model.nop.times {i ->  %>
+        <tr class = "datarow">
+            <td > ${model.projectCollection[i].name}</td>
+            <td> ${model.projectCollection[i].grailsVersion}</td>
+            <td> ${model.projectCollection[i].gitRepoSsh}</td>
+            <td>${model.projectCollection[i].destination}</td>
+            <td >
+                <form method = "get" action = "EditProject.html" >
+                    <input type = "hidden" name = "id" value="${model.projectCollection[i].id}">
+                    <input type = "hidden" name = "name" value="${model.projectCollection[i].name}">
+                    <input type = "hidden" name = "version" value="${model.projectCollection[i].grailsVersion}">
+                    <input type = "hidden" name = "gitRepo" value="${model.projectCollection[i].gitRepoSsh}">
+                    <input type = "hidden" name = "dest" value="${model.projectCollection[i].destination}">
+                    <input type = "submit" class = "buttons" value = "Edit" >
+                </form>
+            </td>
+            <td >
+                <form method = "post" action = "deleteproject" onsubmit="return confirm('Are you sure you want to Delete?')">
+                    <input type = "hidden" name = "id" value="${model.projectCollection[i].id}">
+                    <input type = "submit" class = "buttons" value = "Delete" >
+                </form>
+            </td>
+            <td >
+                <form method = "post" action = "deploy" onsubmit="return confirm('Are you sure you want to Deploy?')">
+					<input type = "hidden" name = "version" value="${model.projectCollection[i].grailsVersion}">
+                    <input type = "hidden" name = "git" value="${model.projectCollection[i].gitRepoSsh}">
+                    <input type = "hidden" name = "dest" value="${model.projectCollection[i].destination}">
+                    <input type = "submit" class = "buttons" value = "Deploy" >
+                </form>
+            </td>
+
+        </tr>
+	 <% } %> 
+	</table>
+
+
+
+
+<footer>&copy; Copyright Niafikra.</footer>
+</body>
+</html>

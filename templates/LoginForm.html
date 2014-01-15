@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Welcome to AutoDeployer</title>
+    <link href="/Forms.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+
+<script>
+		function validateEmail()
+		{
+		    var e = document.forms["login"]["email"].value;
+		    var atpos =e.indexOf("@");
+		    var dotpos =e.lastIndexOf(".");
+		    if (atpos<1 || dotpos<atpos+2 || dotpos+2 >= e.length || e == "" || e == null)
+  			{
+  		        alert("Not a valid e-mail address");
+                return false;
+  			} else {
+  			    return true;
+  			}
+		}
+		function validatePassword()
+		{
+		    var p=document.forms["login"]["password"].value;
+		    if (p==null || p=="")
+  			{
+  		        alert("Enter a valid password");
+  		        return false;
+  			}else {
+  			    return true;
+  			}
+		}
+
+
+
+</script>
+<h1> AutoDeployer </h1>
+
+<div id="form" align = "right">
+    <fieldset>
+        <form name="login" method="post" onsubmit="return validateEmail() && validatePassword()" action="login">
+            <table border = "0">
+                <tr>
+                    <td>Email:</td>
+                    <td><input class="fill" type="text" name="email"><br/><br/></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input class="fill" type="password" name="password"><br/><br/></td>
+                </tr><br/><br/><br/>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" id="button" value="Login"></td>
+                </tr>
+		<tr>
+			<td></td>
+			<% if(model.errormessage != "") { %>
+
+			<td id = "errormessage">$model.errormessage</td>
+			<% } %>
+		</tr>
+
+            </table><br/><br/><br/>
+
+
+        </form>
+    </fieldset>
+</div>
+<footer>&copy; Copyright Niafikra.</footer>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
