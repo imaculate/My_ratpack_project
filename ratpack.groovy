@@ -14,13 +14,14 @@ def userEmail;
 /** this will hold the email address of the logged user
  *
  */
-def userName;
+def firstName;
+/** this will hold the firstName of the user */
 
 def projects;
 
         def noOfProjects;
 
-/** this will hold the firstName of the user */
+
 
 get() {
     render groovyTemplate ( [errormessage:""], "LoginForm.html")
@@ -150,28 +151,23 @@ post("deploy"){
 	def folder = git.substring(git.lastIndexOf("/")+1, git.lastIndexOf("."))
 
    
-        if(Project.clone(git)){
-        render groovyTemplate( [message: "You have successfully cloned this project from $git",username: firstName, errormessage:"", projectcollection: projects, nop: noOfProjects], "HomePage.html") 
+        try{
+			String clone = Project.clone(git)
+			String build = Project.build(git)
+			String deploy = Project.deploy(folder, dest)
+			String message = clone + build + deploy
+		
+        render groovyTemplate( [message: "$message",username: firstName, errormessage:"", projectCollection: projects, nop: noOfProjects], "HomePage.html") 
 	
                 
-    }else{
-	render groovyTemplate( [message: "",username: firstName, errormessage:"An error occured when cloning, check your address", projectcollection: projects, nop: noOfProjects], "HomePage.html") 
+    }catch(Exception e){
+	
+	StringWriter sw = new StringWriter();
+	e.printStackTrace(new PrintWriter(sw));
+	String stacktrace = sw.toString();
+	render groovyTemplate( [message: "", username: firstName, errormessage:"${stacktrace}", projectCollection: projects, nop: noOfProjects], "HomePage.html") 
 	}
-	 if(Project.build(git)){
-        render groovyTemplate( [message: "You have successfully built this project",username: firstName, errormessage:"", projectcollection: projects, nop: noOfProjects], "HomePage.html") 
-	
-                
-    }else{
-	render groovyTemplate( [message: "",username: firstName, errormessage:"An error occured while building, check your application content", projectcollection: projects, nop: noOfProjects], "HomePage.html") 
-}
-        if(Project.deploy(folder, destination)){
-        render groovyTemplate( [message: "You have successfully deployed this project to $dest",username: firstName, errormessage:"", projectcollection: projects, nop: noOfProjects], "HomePage.html") 
-	
-                
-    }else{
-render groovyTemplate( [message: "",username: firstName, errormessage:"An error occured on deploying, check that you have added autodeployer's ssh key to $dest", projectcollection: projects, nop: noOfProjects], "HomePage.html") 
-}
-	//you will come catch catch all possible errors , invalid address and ssh keys. 
+	  
 
 }
 post("logout"){

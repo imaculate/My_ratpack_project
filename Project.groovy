@@ -54,33 +54,51 @@ public class Project{
         projectList
     }
 
-	static boolean clone(git){
-		def cloned = false
+	static String clone(git){
+		try{
 		def p = "git clone $git".execute()
-		if (p.waitFor() == 0){ cloned = true }
-		cloned
+		return "clone sucessful;"
+		} catch (Exception e){
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			String stacktrace = sw.toString();
+			stacktrace;		
+		}
+		
+	
 		
 	}
-	static boolean build(git){
-		def built = false
-		def name = git.substring(git.lastIndexOf("/")+1, git.lastIndexOf("."))
-		def p = "sh -c cd $name; grails upgrade; grails war".execute()
-		if (p.waitFor() == 0){ built = true }
-		built
+	static String build(git){
+		try{
+			def name = git.substring(git.lastIndexOf("/")+1, git.lastIndexOf("."))
+			name = "/" + name
+			def p = "sh -c cd $name; grails upgrade; grails war".execute()
+				//shell specific command, sh -c
+			return "War file created;"
+		}catch(Exception e){
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			String stacktrace = sw.toString();
+			stacktrace;
+		}
+		
 
 	}
 	
-	static boolean deploy(folder, destination){
-		def deployed = false
-		def p1 = "ssh destination"
-		if(p1.waitFor() == 0){
-			def p2 = "scp -r */target/*.war destination; exit".execute()
-			if(p2.waitFor() == 0){deployed = true}
-	
-			def p3 = "rm -rf folder; rm -rf */*.war".execute()
-		}
-		deployed
+	static String deploy(folder, destination){
+		try{
+			def p1 = "ssh destination"
+			def p2 = "scp -r /target/*.war destination".execute() //transfer the built file to destination server
+			def p3 = "sh -c cd ..;rm -rf folder; rm -rf */*.war".execute() // delete the project file to avoid confusion
+			return "Deployed"
+		}catch (Exception e){
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			String stacktrace = sw.toString();
+			stacktrace;
+		
 	}	
+	}
 
 
 
@@ -101,5 +119,8 @@ public class Project{
 	"rm -rf "/tmp/$git"".execute()
     }
 */
+
+
+
 
 }
